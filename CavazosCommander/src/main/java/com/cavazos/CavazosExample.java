@@ -4,11 +4,15 @@ import java.io.FileReader;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Stack;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 public class CavazosExample {
+  // Stack to store issued commands for undo/redo
+  private static Stack<String> commandStack = new Stack<>();
+  private static Stack<String> redoStack = new Stack<>();
+
   public static void main(String[] args) {
     Scanner scanner = new Scanner(System.in);
     String input = "";
@@ -59,7 +63,12 @@ public class CavazosExample {
       JSONArray commands = (JSONArray) parser.parse(reader);
       Random random = new Random();
       int randomIndex = random.nextInt(commands.size());
-      System.out.println("Issued Command: " + commands.get(randomIndex));
+      String command = (String) commands.get(randomIndex);
+      System.out.println("Issued Command: " + command);
+
+      // Add the command to the undo stack and clear the redo stack
+      commandStack.push(command);
+      redoStack.clear();
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -80,13 +89,25 @@ public class CavazosExample {
     }
   }
 
-  // Placeholder for undo command
+  // Function to undo the last issued command
   private static void undoLastCommand() {
-    System.out.println("Undo functionality not implemented yet.");
+    if (!commandStack.isEmpty()) {
+      String command = commandStack.pop();
+      redoStack.push(command); // Move the command to redo stack
+      System.out.println("Undid Command: " + command);
+    } else {
+      System.out.println("No commands to undo.");
+    }
   }
 
-  // Placeholder for redo command
+  // Function to redo the last undone command
   private static void redoLastCommand() {
-    System.out.println("Redo functionality not implemented yet.");
+    if (!redoStack.isEmpty()) {
+      String command = redoStack.pop();
+      commandStack.push(command); // Move the command back to undo stack
+      System.out.println("Redid Command: " + command);
+    } else {
+      System.out.println("No commands to redo.");
+    }
   }
 }

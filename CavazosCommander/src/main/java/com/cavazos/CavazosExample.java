@@ -6,8 +6,7 @@ import org.json.simple.*;
 public class CavazosExample {
 
   public static void main(String[] args) {
-    String fileName =
-      "/Users/jerom/Documents/GitHub/class-java/general-cavazos/undoredo/src/main/java/com/cavazos/commands.json";
+    String fileName = "/Users/martinsolorio/Desktop/Cavazos-Commander/CavazosCommander/src/main/resources/commands.json";
 
     // read coammands
     JSONArray commandJSONArray = JSONFile.readArray(fileName);
@@ -19,8 +18,7 @@ public class CavazosExample {
     print(commandArray);
 
     System.out.println(
-      "----- Issuing 5 random commands from General Cavazos -----"
-    );
+        "----- Issuing 5 random commands from General Cavazos -----");
     randomCommand(commandArray, 5);
   }
 
